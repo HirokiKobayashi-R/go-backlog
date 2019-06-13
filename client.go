@@ -48,6 +48,7 @@ type HTTP interface {
 	Post()
 	Put()
 	Delete()
+	Patch()
 }
 
 // Client is
@@ -87,6 +88,11 @@ func (c *Client) Delete(endpoint string, params url.Values) ([]byte, error) {
 	return c.execute("DELETE", endpoint, params)
 }
 
+// Patch PATCH method
+func (c *Client) Patch(endpoint string, params url.Values) ([]byte, error) {
+	return c.execute("DELETE", endpoint, params)
+}
+
 func (c *Client) composeURL(pathStr string, params url.Values) string {
 	copiedURL := *c.BaseURL
 	copiedURL.Path = path.Join(copiedURL.Path, pathStr)
@@ -96,7 +102,11 @@ func (c *Client) composeURL(pathStr string, params url.Values) string {
 }
 
 func (c *Client) parseBody(resp *http.Response) ([]byte, error) {
-	defer resp.Body.Close()
+	defer func() {
+		if err:= resp.Body.Close(); err != nil {
+			panic(err)
+		}
+	}()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		if Verbose {
