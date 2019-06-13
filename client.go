@@ -90,7 +90,7 @@ func (c *Client) Delete(endpoint string, params url.Values) ([]byte, error) {
 
 // Patch PATCH method
 func (c *Client) Patch(endpoint string, params url.Values) ([]byte, error) {
-	return c.execute("DELETE", endpoint, params)
+	return c.execute("PATCH", endpoint, params)
 }
 
 func (c *Client) composeURL(pathStr string, params url.Values) string {
